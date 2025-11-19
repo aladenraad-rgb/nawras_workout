@@ -2,15 +2,21 @@
 <html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8" />
-  <title>جدول تمارين منزلية للضخامة</title>
+  <title>Solo Leveling v2 - نظام رعد 30 يوم</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
   <style>
     :root {
-      --c1: #000000;  /* أسود */
-      --c2: #c2104f;  /* وردي غامق */
-      --c3: #ff006e;  /* وردي فاقع */
-      --c4: #ffd6de;  /* وردي فاتح جداً */
+      --bg-main: #050509;
+      --bg-card: #111119;
+      --bg-card-soft: #0b0b14;
+      --accent: #b33035;     /* أحمر خمري */
+      --accent-soft: rgba(179, 48, 53, 0.18);
+      --accent-strong: #ff4b61;
+      --text-main: #f7f7f7;
+      --text-muted: #a5a5b5;
+      --border-radius: 14px;
+      --shadow-soft: 0 12px 34px rgba(0, 0, 0, 0.7);
     }
 
     * {
@@ -22,272 +28,942 @@
 
     body {
       min-height: 100vh;
-      background: linear-gradient(to bottom, var(--c1) 25%, var(--c2) 25%, var(--c2) 50%, var(--c3) 50%, var(--c3) 75%, var(--c4) 75%);
-      display: flex;
-      justify-content: center;
-      align-items: flex-start;
-      padding: 16px;
-      color: #ffffff;
+      padding: 14px;
+      color: var(--text-main);
+      background:
+        radial-gradient(circle at 10% 0, rgba(179,48,53,0.25) 0, transparent 40%),
+        radial-gradient(circle at 90% 0, rgba(64, 64, 160, 0.35) 0, transparent 45%),
+        radial-gradient(circle at 50% 100%, rgba(0,0,0,0.9) 0, #020208 60%);
     }
 
-    .container {
-      width: 100%;
-      max-width: 900px;
-      background: rgba(0, 0, 0, 0.8);
-      border-radius: 16px;
-      padding: 16px;
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+    .app-shell {
+      max-width: 960px;
+      margin: 0 auto 40px auto;
     }
 
     h1 {
-      text-align: center;
-      margin-bottom: 6px;
-      font-size: 1.4rem;
-      color: var(--c4);
+      font-size: 1.6rem;
+      margin-bottom: 4px;
     }
 
-    h2 {
-      text-align: center;
+    .subtitle {
       font-size: 0.9rem;
-      margin-bottom: 14px;
-      color: #ff9dbe;
+      color: var(--text-muted);
+      margin-bottom: 10px;
+    }
+
+    /* NAV */
+    .nav-tabs {
+      display: flex;
+      gap: 6px;
+      margin-bottom: 12px;
+      flex-wrap: wrap;
+    }
+
+    .nav-btn {
+      flex: 1 1 90px;
+      padding: 7px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      background: rgba(10, 10, 20, 0.8);
+      color: var(--text-muted);
+      font-size: 0.8rem;
+      cursor: pointer;
+      text-align: center;
+    }
+
+    .nav-btn.active {
+      background: linear-gradient(135deg, var(--accent), var(--accent-strong));
+      color: #fff;
+      border-color: rgba(255, 255, 255, 0.5);
+      box-shadow: 0 0 12px rgba(255, 75, 97, 0.7);
+    }
+
+    /* SUMMARY HEADER */
+    .summary-card {
+      background: radial-gradient(circle at top left, rgba(179,48,53,0.3) 0, transparent 55%),
+                  linear-gradient(135deg, #12121c, #090910);
+      border-radius: 18px;
+      padding: 12px 14px;
+      box-shadow: var(--shadow-soft);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      margin-bottom: 12px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .summary-card::before {
+      content: "";
+      position: absolute;
+      width: 220px;
+      height: 220px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(255,255,255,0.06), transparent 60%);
+      top: -120px;
+      left: -40px;
+      opacity: 0.4;
+      pointer-events: none;
+      mix-blend-mode: screen;
+      animation: glow-move 12s linear infinite alternate;
+    }
+
+    @keyframes glow-move {
+      0%   { transform: translateX(0) translateY(0); }
+      100% { transform: translateX(60px) translateY(40px); }
+    }
+
+    .summary-main-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 8px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .rank-badge {
+      padding: 5px 10px;
+      border-radius: 999px;
+      border: 1px solid var(--accent-strong);
+      font-size: 0.85rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--accent-soft);
+      box-shadow: 0 0 12px rgba(255, 75, 97, 0.5);
+    }
+
+    .rank-letter {
+      font-weight: 800;
+      font-size: 1.1rem;
+      color: #ffe4e6;
+    }
+
+    .summary-main-info {
+      text-align: left;
+      font-size: 0.85rem;
+    }
+
+    .summary-main-info div {
+      margin-bottom: 2px;
+    }
+
+    .summary-stats {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      position: relative;
+      z-index: 1;
+    }
+
+    .summary-stats div {
+      padding: 3px 8px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.03);
+    }
+
+    .actions-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 8px;
+      gap: 8px;
+      flex-wrap: wrap;
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      position: relative;
+      z-index: 1;
+    }
+
+    button.reset-btn {
+      border: 1px solid rgba(255, 255, 255, 0.22);
+      background: transparent;
+      color: #ffb4b8;
+      padding: 3px 10px;
+      border-radius: 999px;
+      font-size: 0.8rem;
+      cursor: pointer;
+    }
+
+    button.reset-btn:hover {
+      background: rgba(255, 255, 255, 0.06);
+    }
+
+    /* XP BAR */
+    .xp-bar-wrapper {
+      margin-top: 6px;
+      margin-bottom: 4px;
+    }
+
+    .xp-label-row {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-bottom: 2px;
+    }
+
+    .xp-bar-track {
+      width: 100%;
+      height: 10px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.06);
+      overflow: hidden;
+      position: relative;
+    }
+
+    .xp-bar-fill {
+      height: 100%;
+      width: 0%;
+      border-radius: inherit;
+      background: linear-gradient(90deg, #ff9a9e, #fecfef, #f5576c);
+      box-shadow: 0 0 12px rgba(255, 154, 158, 0.65);
+      transition: width 0.3s ease-out;
+    }
+
+    /* SECTIONS */
+    .section {
+      display: none;
+    }
+
+    .section.active {
+      display: block;
+    }
+
+    /* DAYS GRID */
+    .days-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 10px;
+      margin-top: 8px;
+      margin-bottom: 16px;
+    }
+
+    .day-card {
+      background: var(--bg-card);
+      border-radius: var(--border-radius);
+      padding: 10px 10px 8px 10px;
+      border: 1px solid rgba(255, 255, 255, 0.04);
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.45);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .day-card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at top, rgba(255,255,255,0.04), transparent 60%);
+      opacity: 0;
+      transition: opacity 0.2s ease;
+      pointer-events: none;
+    }
+
+    .day-card.complete::before {
+      opacity: 1;
+    }
+
+    .day-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 6px;
     }
 
     .day-title {
-      margin-top: 18px;
-      margin-bottom: 6px;
-      padding: 8px 10px;
-      border-radius: 12px;
-      background: linear-gradient(to left, var(--c3), var(--c2));
-      font-weight: 700;
-      font-size: 1rem;
-      color: #fff;
-    }
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-bottom: 8px;
-      overflow: hidden;
-      border-radius: 12px;
-    }
-
-    thead {
-      background-color: var(--c2);
-    }
-
-    th, td {
-      padding: 8px;
-      font-size: 0.82rem;
-      text-align: center;
-    }
-
-    th {
-      color: #ffe7f2;
-    }
-
-    tbody tr:nth-child(even) {
-      background-color: rgba(255, 0, 110, 0.12);
-    }
-
-    tbody tr:nth-child(odd) {
-      background-color: rgba(255, 214, 222, 0.08);
-    }
-
-    td a {
-      color: #ff8ac2;
-      text-decoration: none;
+      font-size: 0.95rem;
       font-weight: 600;
     }
 
-    td a:hover {
-      text-decoration: underline;
+    .day-status {
+      font-size: 0.75rem;
+      color: var(--text-muted);
     }
 
-    .note {
-      margin-top: 10px;
+    .tasks {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      margin-top: 4px;
+      margin-bottom: 4px;
+    }
+
+    label.task {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      cursor: pointer;
+      padding: 3px 4px;
+      border-radius: 8px;
+      transition: background 0.15s ease;
+    }
+
+    label.task:hover {
+      background: rgba(255, 255, 255, 0.03);
+    }
+
+    input[type="checkbox"] {
+      width: 17px;
+      height: 17px;
+      accent-color: var(--accent);
+      cursor: pointer;
+    }
+
+    .day-card.complete {
+      border-color: var(--accent-strong);
+      box-shadow: 0 0 12px rgba(255, 75, 97, 0.7);
+    }
+
+    .day-card.complete .day-status {
+      color: #8cffc5;
+      font-weight: 600;
+    }
+
+    .day-card.partial .day-status {
+      color: #ffd37a;
+    }
+
+    .hint {
       font-size: 0.78rem;
-      color: #ffd6de;
-      text-align: center;
-      line-height: 1.6;
+      color: var(--text-muted);
+      margin-top: 3px;
     }
 
-    @media (max-width: 600px) {
-      th, td {
-        font-size: 0.75rem;
-        padding: 6px;
+    /* RULES / WEEKLY STATS */
+    .rules-card,
+    .stats-card {
+      background: var(--bg-card-soft);
+      border-radius: 16px;
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      padding: 12px;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+      margin-bottom: 12px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.55);
+    }
+
+    .rules-card h2,
+    .stats-card h2 {
+      font-size: 0.95rem;
+      margin-bottom: 6px;
+      color: var(--text-main);
+    }
+
+    .rules-card h3,
+    .stats-card h3 {
+      font-size: 0.85rem;
+      margin-top: 6px;
+      margin-bottom: 2px;
+      color: #fbe5e7;
+    }
+
+    ul {
+      padding-right: 16px;
+      margin-top: 2px;
+      margin-bottom: 2px;
+    }
+
+    li {
+      margin-bottom: 2px;
+    }
+
+    .week-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 8px;
+      margin-top: 6px;
+    }
+
+    .week-box {
+      background: #0a0a12;
+      border-radius: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.04);
+      padding: 8px;
+      font-size: 0.78rem;
+    }
+
+    .week-box-header {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 4px;
+      font-size: 0.8rem;
+      color: #f5f5f5;
+    }
+
+    .badge {
+      border-radius: 999px;
+      padding: 2px 7px;
+      font-size: 0.7rem;
+    }
+
+    .badge-ok {
+      background: rgba(0, 200, 120, 0.18);
+      color: #9afac7;
+      border: 1px solid rgba(0, 200, 120, 0.6);
+    }
+
+    .badge-no {
+      background: rgba(200, 160, 0, 0.18);
+      color: #ffe7a4;
+      border: 1px solid rgba(200, 160, 0, 0.5);
+    }
+
+    .week-stats-row {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      margin-bottom: 4px;
+    }
+
+    .week-stat-pill {
+      padding: 2px 6px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.04);
+    }
+
+    .week-range {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    @media (max-width: 480px) {
+      h1 {
+        font-size: 1.35rem;
       }
-      h1 { font-size: 1.2rem; }
-      h2 { font-size: 0.85rem; }
-      .day-title { font-size: 0.9rem; }
+      .summary-card {
+        padding: 10px 10px;
+      }
+      .day-card {
+        padding: 8px;
+      }
+      label.task {
+        font-size: 0.78rem;
+      }
+      .nav-btn {
+        font-size: 0.76rem;
+        padding: 6px 8px;
+      }
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <h1>جدول تمارين منزلية للضخامة العضلية</h1>
-    <h2>تمارين بصدر وظهر وأرجل كاملة باستخدام وزن الجسم + روابط فيديو لكل تمرين</h2>
+  <div class="app-shell">
+    <h1>نظام Solo Leveling لـ 30 يوم</h1>
+    <div class="subtitle">نسخة رعد: قوة – مال – شخصية – مستوى 1 إلى 100.</div>
 
-    <!-- اليوم 1 -->
-    <div class="day-title">اليوم 1 – صدر + أكتاف أمامية + ترايسبس</div>
-    <table>
-      <thead>
-        <tr>
-          <th>التمرين</th>
-          <th>المجموعات × التكرارات</th>
-          <th>فيديو شرح</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>ضغط عادي</td>
-          <td>4 × 12–20</td>
-          <td><a href="https://www.youtube.com/watch?v=IODxDxX7oi4" target="_blank">مشاهدة</a></td>
-        </tr>
-        <tr>
-          <td>ضغط القدمين مرفوعة (Decline)</td>
-          <td>3 × 10–15</td>
-          <td><a href="https://www.youtube.com/watch?v=SKPab2YC8BE" target="_blank">مشاهدة</a></td>
-        </tr>
-        <tr>
-          <td>ضغط دايموند</td>
-          <td>3 × 8–12</td>
-          <td><a href="https://www.youtube.com/watch?v=J0DnG1_S92I" target="_blank">مشاهدة</a></td>
-        </tr>
-        <tr>
-          <td>ضغط كتف (Pike Push-ups)</td>
-          <td>4 × 8–12</td>
-          <td><a href="https://www.youtube.com/watch?v=LIxvQMhttq4" target="_blank">مشاهدة</a></td>
-        </tr>
-        <tr>
-          <td>Dips بين كرسيين</td>
-          <td>3 × 6–10</td>
-          <td><a href="https://www.youtube.com/watch?v=2z8JmcrW-As" target="_blank">مشاهدة</a></td>
-        </tr>
-      </tbody>
-    </table>
+    <div class="nav-tabs">
+      <button class="nav-btn active" data-section="section-days">الأيام</button>
+      <button class="nav-btn" data-section="section-weekly">الإحصائيات الأسبوعية</button>
+      <button class="nav-btn" data-section="section-rewards">مكافآت و رُتب</button>
+    </div>
 
-    <!-- اليوم 2 -->
-    <div class="day-title">اليوم 2 – ظهر + بايسبس</div>
-    <table>
-      <thead>
-        <tr>
-          <th>التمرين</th>
-          <th>المجموعات × التكرارات</th>
-          <th>فيديو شرح</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>عقلة عادية</td>
-          <td>4 × 3–5</td>
-          <td><a href="https://www.youtube.com/watch?v=eGo4IYlbE5g" target="_blank">مشاهدة</a></td>
-        </tr>
-        <tr>
-          <td>Negative Pull-Ups (نزول ببطء)</td>
-          <td>3 × 5</td>
-          <td><a href="https://www.youtube.com/watch?v=pZKX3jYpT2c" target="_blank">مشاهدة</a></td>
-        </tr>
-        <tr>
-          <td>Australian Pull-Ups (عقلة مائلة)</td>
-          <td>4 × 8–12</td>
-          <td><a href="https://www.youtube.com/watch?v=sT0GJ9fQ7Rk" target="_blank">مشاهدة</a></td>
-        </tr>
-        <tr>
-          <td>Biceps Curl بحقيبة مليئة بالكتب</td>
-          <td>4 × 12–15</td>
-          <td><a href="https://www.youtube.com/watch?v=L5lxDRqF0yQ" target="_blank">مشاهدة</a></td>
-        </tr>
-        <tr>
-          <td>Hammer Curl بحقيبة</td>
-          <td>3 × 10–12</td>
-          <td><a href="https://www.youtube.com/watch?v=zC3nLlEvin4" target="_blank">مشاهدة</a></td>
-        </tr>
-      </tbody>
-    </table>
+    <div class="summary-card">
+      <div class="summary-main-row">
+        <div class="rank-badge">
+          <span class="rank-letter" id="rank-letter">D</span>
+          <span id="rank-name">المبتدئ</span>
+        </div>
+        <div class="summary-main-info">
+          <div>أيام مكتملة: <strong id="total-complete">0</strong> / 30</div>
+          <div>المستوى: <strong id="level-value">1</strong> / 100</div>
+        </div>
+      </div>
 
-    <!-- اليوم 3 -->
-    <div class="day-title">اليوم 3 – أرجل كاملة</div>
-    <table>
-      <thead>
-        <tr>
-          <th>التمرين</th>
-          <th>المجموعات × التكرارات</th>
-          <th>فيديو شرح</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>سكوات وزن الجسم</td>
-          <td>4 × 15–20</td>
-          <td><a href="https://www.youtube.com/watch?v=aclHkVaku9U" target="_blank">مشاهدة</a></td>
-        </tr>
-        <tr>
-          <td>سكوات على رجل واحدة (Pistol Squat مساعد)</td>
-          <td>3 × 6–8</td>
-          <td><a href="https://www.youtube.com/watch?v=CAqa9Xrgv-M" target="_blank">مشاهدة</a></td>
-        </tr>
-        <tr>
-          <td>لانجز (اندفاع أمامي)</td>
-          <td>3 × 12 لكل رجل</td>
-          <td><a href="https://www.youtube.com/watch?v=QOVaHwm-Q6U" target="_blank">مشاهدة</a></td>
-        </tr>
-        <tr>
-          <td>قفز سكوات</td>
-          <td>3 × 10</td>
-          <td><a href="https://www.youtube.com/watch?v=U4s4mEQ5VqU" target="_blank">مشاهدة</a></td>
-        </tr>
-        <tr>
-          <td>رفع الساقين للسمانة (Calf Raises)</td>
-          <td>4 × 20–30</td>
-          <td><a href="https://www.youtube.com/watch?v=-M4-G8p8fmc" target="_blank">مشاهدة</a></td>
-        </tr>
-      </tbody>
-    </table>
+      <div class="xp-bar-wrapper">
+        <div class="xp-label-row">
+          <span>شريط الخبرة (EXP)</span>
+          <span id="xp-label">0 / 300 XP</span>
+        </div>
+        <div class="xp-bar-track">
+          <div class="xp-bar-fill" id="xp-bar-fill"></div>
+        </div>
+      </div>
 
-    <!-- اليوم 4 -->
-    <div class="day-title">اليوم 4 – صدر + ظهر (Pump Day)</div>
-    <table>
-      <thead>
-        <tr>
-          <th>التمرين</th>
-          <th>المجموعات × التكرارات</th>
-          <th>فيديو شرح</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>ضغط عادي</td>
-          <td>3 × 15</td>
-          <td><a href="https://www.youtube.com/watch?v=IODxDxX7oi4" target="_blank">مشاهدة</a></td>
-        </tr>
-        <tr>
-          <td>ضغط ضيق + ضغط واسع (Superset)</td>
-          <td>3 × (8 ضيق + 8 واسع)</td>
-          <td><a href="https://www.youtube.com/watch?v=E9D3xqO6ytY" target="_blank">مشاهدة</a></td>
-        </tr>
-        <tr>
-          <td>Australian Pull-Ups</td>
-          <td>3 × 12</td>
-          <td><a href="https://www.youtube.com/watch?v=sT0GJ9fQ7Rk" target="_blank">مشاهدة</a></td>
-        </tr>
-        <tr>
-          <td>Negative Pull-Ups</td>
-          <td>2 × 5</td>
-          <td><a href="https://www.youtube.com/watch?v=pZKX3jYpT2c" target="_blank">مشاهدة</a></td>
-        </tr>
-        <tr>
-          <td>Plank (بلانك ثابت)</td>
-          <td>3 × 1 دقيقة</td>
-          <td><a href="https://www.youtube.com/watch?v=pSHjTRCQxIw" target="_blank">مشاهدة</a></td>
-        </tr>
-      </tbody>
-    </table>
+      <div class="summary-stats">
+        <div>5 أيام كاملة في أسبوع = نركيلة أسبوعية واحدة.</div>
+        <div>30 يوماً كاملة = مكافأة كبيرة (تختارها لنفسك).</div>
+      </div>
 
-    <div class="note">
-      ملاحظة: حاول الوصول إلى قرب الفشل العضلي في آخر مجموعة من كل تمرين مع المحافظة على الأداء الصحيح،
-      واحتفظ بيوم أو يومين راحة أسبوعياً للتعافي.
+      <div class="actions-row">
+        <div>تقدمك محفوظ تلقائياً في هذا الجهاز (localStorage).</div>
+        <button class="reset-btn" id="reset-btn">إعادة ضبط الشهر بالكامل</button>
+      </div>
+    </div>
+
+    <!-- SECTION DAYS -->
+    <div id="section-days" class="section active">
+      <div class="days-grid" id="days-container">
+        <!-- يتم توليد الأيام هنا عبر JavaScript -->
+      </div>
+
+      <div class="rules-card">
+        <h2>قواعد اليوم الواحد (٣ مهام فقط):</h2>
+        <h3>المهام اليومية:</h3>
+        <ul>
+          <li>مهمة القوة: تمرين من 2:00 إلى 4:30 مساءً.</li>
+          <li>مهمة المال: 30 دقيقة مهارة أو مشروع.</li>
+          <li>مهمة الشخصية/الروح: أذكار + صفحة قرآن + لقطة قصيرة من يومك.</li>
+        </ul>
+
+        <h3>العقاب المتدرّج:</h3>
+        <ul>
+          <li>أول يوم تفشل فيه: وجهك تحت ماء بارد 10 ثوانٍ.</li>
+          <li>ثاني يوم تفشل فيه: رأسك 15 ثانية تحت الماء البارد.</li>
+          <li>ثالث يوم تفشل فيه: دش بارد 30 ثانية.</li>
+          <li>رابع مرة فشل في نفس الأسبوع: دش 30 ثانية + لا مكافآت ذلك اليوم.</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- SECTION WEEKLY -->
+    <div id="section-weekly" class="section">
+      <div class="stats-card">
+        <h2>الإحصائيات الأسبوعية</h2>
+        <p>كل أسبوع يحسب من 7 أيام. إذا أنجزت 5 أيام “مكتملة” أو أكثر في الأسبوع، تستحق مكافأة النركيلة لهذا الأسبوع.</p>
+        <div class="week-grid">
+          <div class="week-box" id="week-1-box">
+            <div class="week-box-header">
+              <span>الأسبوع 1</span>
+              <span id="week-1-badge" class="badge badge-no">لا تستحق النركيلة بعد</span>
+            </div>
+            <div class="week-stats-row">
+              <div class="week-stat-pill" id="week-1-complete">أيام مكتملة: 0</div>
+              <div class="week-stat-pill" id="week-1-partial">أيام جزئية: 0</div>
+              <div class="week-stat-pill" id="week-1-empty">أيام فشل: 0</div>
+            </div>
+            <div class="week-range">الأيام 1 → 7</div>
+          </div>
+
+          <div class="week-box" id="week-2-box">
+            <div class="week-box-header">
+              <span>الأسبوع 2</span>
+              <span id="week-2-badge" class="badge badge-no">لا تستحق النركيلة بعد</span>
+            </div>
+            <div class="week-stats-row">
+              <div class="week-stat-pill" id="week-2-complete">أيام مكتملة: 0</div>
+              <div class="week-stat-pill" id="week-2-partial">أيام جزئية: 0</div>
+              <div class="week-stat-pill" id="week-2-empty">أيام فشل: 0</div>
+            </div>
+            <div class="week-range">الأيام 8 → 14</div>
+          </div>
+
+          <div class="week-box" id="week-3-box">
+            <div class="week-box-header">
+              <span>الأسبوع 3</span>
+              <span id="week-3-badge" class="badge badge-no">لا تستحق النركيلة بعد</span>
+            </div>
+            <div class="week-stats-row">
+              <div class="week-stat-pill" id="week-3-complete">أيام مكتملة: 0</div>
+              <div class="week-stat-pill" id="week-3-partial">أيام جزئية: 0</div>
+              <div class="week-stat-pill" id="week-3-empty">أيام فشل: 0</div>
+            </div>
+            <div class="week-range">الأيام 15 → 21</div>
+          </div>
+
+          <div class="week-box" id="week-4-box">
+            <div class="week-box-header">
+              <span>الأسبوع 4</span>
+              <span id="week-4-badge" class="badge badge-no">لا تستحق النركيلة بعد</span>
+            </div>
+            <div class="week-stats-row">
+              <div class="week-stat-pill" id="week-4-complete">أيام مكتملة: 0</div>
+              <div class="week-stat-pill" id="week-4-partial">أيام جزئية: 0</div>
+              <div class="week-stat-pill" id="week-4-empty">أيام فشل: 0</div>
+            </div>
+            <div class="week-range">الأيام 22 → 30</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SECTION REWARDS -->
+    <div id="section-rewards" class="section">
+      <div class="rules-card">
+        <h2>نظام المكافآت و الرُتب (RPG)</h2>
+
+        <h3>المستوى (Level):</h3>
+        <ul>
+          <li>كل يوم مكتمل = 10 نقاط خبرة (XP).</li>
+          <li>الحد الأقصى خلال 30 يوم = 300 XP.</li>
+          <li>المستوى يحسب من 1 إلى 100 بناءً على عدد الأيام المكتملة.</li>
+        </ul>
+
+        <h3>المكافآت اليومية:</h3>
+        <ul>
+          <li>إنجاز 3 مهام اليوم: قهوة + 15 دقيقة إنستغرام (بتايمر).</li>
+        </ul>
+
+        <h3>المكافآت الأسبوعية:</h3>
+        <ul>
+          <li>إنجاز 5 أيام مكتملة أو أكثر في أسبوع واحد: نركيلة مرة واحدة في هذا الأسبوع.</li>
+          <li>يمكنك إعادة النظر في نفسك إذا كان الأسبوع ضعيف (أقل من 5 أيام مكتملة).</li>
+        </ul>
+
+        <h3>المكافأة الكبرى (30 يوم):</h3>
+        <ul>
+          <li>إنجاز 30 يوماً كاملة = Rank S (أسطورة).</li>
+          <li>تشتري لنفسك شيئاً كبيراً: حذاء محترم، ساعة، جهاز، أو بداية مشروع جديد.</li>
+        </ul>
+
+        <h3>الرُتب (Ranks):</h3>
+        <ul>
+          <li>Rank D: إنجاز 10 أيام.</li>
+          <li>Rank C: إنجاز 15 يوماً.</li>
+          <li>Rank B: إنجاز 22 يوماً.</li>
+          <li>Rank A: إنجاز 26–29 يوماً.</li>
+          <li>Rank S: إنجاز 30 يوماً كاملة.</li>
+        </ul>
+      </div>
     </div>
   </div>
-</body>
-</html>
+
+  <script>
+  (function () {
+    const STORAGE_KEY = "raad_solo_leveling_30d_v2";
+
+    const tasksConfig = [
+      {
+        id: "strength",
+        label: "مهمة القوة: تمرين 2:00 – 4:30 مساءً"
+      },
+      {
+        id: "money",
+        label: "مهمة المال: 30 دقيقة مهارة / مشروع"
+      },
+      {
+        id: "character",
+        label: "مهمة الشخصية/الروح: أذكار + صفحة قرآن + لقطة يومية"
+      }
+    ];
+
+    function loadData() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (!raw) {
+          return initEmptyData();
+        }
+        const parsed = JSON.parse(raw);
+        if (!parsed || typeof parsed !== "object" || !parsed.days) {
+          return initEmptyData();
+        }
+        return parsed;
+      } catch (e) {
+        return initEmptyData();
+      }
+    }
+
+    function initEmptyData() {
+      const days = {};
+      for (let d = 1; d <= 30; d++) {
+        days[d] = {
+          strength: false,
+          money: false,
+          character: false
+        };
+      }
+      return { days };
+    }
+
+    function saveData(data) {
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+      } catch (e) {
+        // تجاهل الخطأ بصمت
+      }
+    }
+
+    function createDayCard(dayNumber, dayData) {
+      const card = document.createElement("div");
+      card.className = "day-card";
+      card.setAttribute("data-day", String(dayNumber));
+
+      const header = document.createElement("div");
+      header.className = "day-header";
+
+      const title = document.createElement("div");
+      title.className = "day-title";
+      title.textContent = "اليوم " + dayNumber;
+
+      const status = document.createElement("div");
+      status.className = "day-status";
+      status.id = "status-" + dayNumber;
+      status.textContent = "لم يبدأ بعد";
+
+      header.appendChild(title);
+      header.appendChild(status);
+
+      const tasksWrapper = document.createElement("div");
+      tasksWrapper.className = "tasks";
+
+      for (let i = 0; i < tasksConfig.length; i++) {
+        const task = tasksConfig[i];
+        const label = document.createElement("label");
+        label.className = "task";
+
+        const checkbox = document.createElement("input");
+        checkbox.type = "checkbox";
+        checkbox.setAttribute("data-day", String(dayNumber));
+        checkbox.setAttribute("data-task", task.id);
+        checkbox.checked = !!dayData[task.id];
+
+        const span = document.createElement("span");
+        span.textContent = task.label;
+
+        label.appendChild(checkbox);
+        label.appendChild(span);
+        tasksWrapper.appendChild(label);
+      }
+
+      const hint = document.createElement("div");
+      hint.className = "hint";
+      hint.textContent = "عند إكمال التمرين + المال + الشخصية، يعتبر اليوم مكتمل.";
+
+      card.appendChild(header);
+      card.appendChild(tasksWrapper);
+      card.appendChild(hint);
+
+      return card;
+    }
+
+    function updateDayUI(dayNumber, data) {
+      const card = document.querySelector('.day-card[data-day="' + dayNumber + '"]');
+      if (!card) return;
+
+      const statusEl = document.getElementById("status-" + dayNumber);
+      const dayData = data.days[dayNumber];
+      const completedCount =
+        (dayData.strength ? 1 : 0) +
+        (dayData.money ? 1 : 0) +
+        (dayData.character ? 1 : 0);
+
+      card.classList.remove("complete", "partial");
+
+      if (completedCount === 0) {
+        statusEl.textContent = "لم يتم إنجاز أي مهمة بعد";
+      } else if (completedCount > 0 && completedCount < 3) {
+        statusEl.textContent = "تم إنجاز جزء من اليوم";
+        card.classList.add("partial");
+      } else if (completedCount === 3) {
+        statusEl.textContent = "اليوم مكتمل ✅";
+        card.classList.add("complete");
+      }
+    }
+
+    function computeFullDays(data) {
+      let fullDays = 0;
+      for (let d = 1; d <= 30; d++) {
+        const dayData = data.days[d];
+        if (dayData.strength && dayData.money && dayData.character) {
+          fullDays++;
+        }
+      }
+      return fullDays;
+    }
+
+    function updateWeeklyStats(data) {
+      for (let week = 1; week <= 4; week++) {
+        let startDay, endDay;
+        if (week === 1) {
+          startDay = 1;
+          endDay = 7;
+        } else if (week === 2) {
+          startDay = 8;
+          endDay = 14;
+        } else if (week === 3) {
+          startDay = 15;
+          endDay = 21;
+        } else {
+          startDay = 22;
+          endDay = 30;
+        }
+
+        let completeCount = 0;
+        let partialCount = 0;
+        let emptyCount = 0;
+
+        for (let d = startDay; d <= endDay; d++) {
+          const dayData = data.days[d];
+          if (!dayData) continue;
+
+          const c =
+            (dayData.strength ? 1 : 0) +
+            (dayData.money ? 1 : 0) +
+            (dayData.character ? 1 : 0);
+
+          if (c === 0) {
+            emptyCount++;
+          } else if (c > 0 && c < 3) {
+            partialCount++;
+          } else if (c === 3) {
+            completeCount++;
+          }
+        }
+
+        const completeEl = document.getElementById("week-" + week + "-complete");
+        const partialEl = document.getElementById("week-" + week + "-partial");
+        const emptyEl = document.getElementById("week-" + week + "-empty");
+        const badgeEl = document.getElementById("week-" + week + "-badge");
+
+        if (completeEl) completeEl.textContent = "أيام مكتملة: " + completeCount;
+        if (partialEl) partialEl.textContent = "أيام جزئية: " + partialCount;
+        if (emptyEl) emptyEl.textContent = "أيام فشل: " + emptyCount;
+
+        if (badgeEl) {
+          badgeEl.classList.remove("badge-ok", "badge-no");
+          if (completeCount >= 5) {
+            badgeEl.textContent = "تستحق نركيلة هذا الأسبوع";
+            badgeEl.classList.add("badge-ok");
+          } else {
+            badgeEl.textContent = "لا تستحق النركيلة بعد";
+            badgeEl.classList.add("badge-no");
+          }
+        }
+      }
+    }
+
+    function updateSummaryUI(data) {
+      const fullDays = computeFullDays(data);
+      const totalEl = document.getElementById("total-complete");
+      if (totalEl) totalEl.textContent = String(fullDays);
+
+      const xp = fullDays * 10;
+      const xpMax = 300;
+      const xpLabelEl = document.getElementById("xp-label");
+      const xpFillEl = document.getElementById("xp-bar-fill");
+      if (xpLabelEl) {
+        xpLabelEl.textContent = xp + " / " + xpMax + " XP";
+      }
+      if (xpFillEl) {
+        const percent = Math.min(100, (xp / xpMax) * 100);
+        xpFillEl.style.width = percent.toFixed(1) + "%";
+      }
+
+      const levelEl = document.getElementById("level-value");
+      let level = 1;
+      if (fullDays > 0) {
+        level = 1 + Math.floor(fullDays * (100 / 30));
+        if (level > 100) level = 100;
+      }
+      if (levelEl) levelEl.textContent = String(level);
+
+      const rankLetterEl = document.getElementById("rank-letter");
+      const rankNameEl = document.getElementById("rank-name");
+      let rankLetter = "D";
+      let rankName = "المبتدئ";
+
+      if (fullDays >= 30) {
+        rankLetter = "S";
+        rankName = "الأسطورة";
+      } else if (fullDays >= 26) {
+        rankLetter = "A";
+        rankName = "النخبة";
+      } else if (fullDays >= 22) {
+        rankLetter = "B";
+        rankName = "متقدّم";
+      } else if (fullDays >= 15) {
+        rankLetter = "C";
+        rankName = "طامح";
+      }
+
+      if (rankLetterEl) rankLetterEl.textContent = rankLetter;
+      if (rankNameEl) rankNameEl.textContent = rankName;
+
+      updateWeeklyStats(data);
+    }
+
+    function buildDaysUI(data) {
+      const container = document.getElementById("days-container");
+      if (!container) return;
+
+      container.innerHTML = "";
+
+      for (let d = 1; d <= 30; d++) {
+        const card = createDayCard(d, data.days[d]);
+        container.appendChild(card);
+      }
+
+      for (let d = 1; d <= 30; d++) {
+        updateDayUI(d, data);
+      }
+    }
+
+    function buildUI(data) {
+      buildDaysUI(data);
+      updateSummaryUI(data);
+    }
+
+    let appData = loadData();
+    buildUI(appData);
+
+    const container = document.getElementById("days-container");
+    if (container) {
+      container.addEventListener("change", function (event) {
+        const target = event.target || event.srcElement;
+        if (!target || target.tagName !== "INPUT" || target.type !== "checkbox") {
+          return;
+        }
+        const day = parseInt(target.getAttribute("data-day"), 10);
+        const taskId = target.getAttribute("data-task");
+        if (!day || !taskId) return;
+
+        if (!appData.days[day]) {
+          appData.days[day] = {
+            strength: false,
+            money: false,
+            character: false
+          };
+        }
+
+        appData.days[day][taskId] = target.checked;
+        saveData(appData);
+        updateDayUI(day, appData);
+        updateSummaryUI(appData);
+      });
+    }
+
+    const resetBtn = document.getElementById("reset-btn");
+    if (resetBtn) {
+      resetBtn.addEventListener("click", function () {
+        const confirmReset = confirm("هل أنت متأكد أنك تريد مسح تقدم الـ 30 يوم بالكامل؟");
+        if (!confirmReset) return;
+        appData = initEmptyData();
+        saveData(appData);
+        buildUI(appData);
+      });
+    }
+
+    // تبديل الصفحات (الأيام / الإحصائيات / المكافآت)
+    const navButtons = document.querySelectorAll(".nav-btn");
+    for (let i = 0; i < navButtons.length; i++) {
+      const btn = navButtons[i];
+      btn.addEventListener("click", function () {
+        const sectionId = btn.getAttribute("data-section");
+        if (!sectionId) return;
+
+        // إزالة active من جميع الأزرار
+        for (let j = 0; j < navButtons.length; j++) {
+          navButtons[j].classList.remove("active");
+        }
+        btn.classList.add("active");
+
+        // إخفاء/إظهار الأقسام
+        const sections = document.querySelectorAll(".section");
+        for (let k = 0; k < sections.length; k++) {
+          sections[k].classList.remove("active");
+        }
+        const targetSection = document.getElementById(sectionId);
+        if (targetSection) {
+          targetSection.classList.add("active");
+        }
+      });
+    }
+  })();
+</script>
